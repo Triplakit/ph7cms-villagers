@@ -1,7 +1,5 @@
 # pH7 Social Dating CMS
 
-## purpose branch - adding purpose field (dating, friendship, love, etc.)
-
 ### The Most Secure, Powerful & Professional Social Dating Web App Builder
 
 
