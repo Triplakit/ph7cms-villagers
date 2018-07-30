@@ -73,6 +73,8 @@ class EditForm
 
         $oForm->addElement(new \PFBC\Element\Checkbox(t('Looking for a:'), 'match_sex', ['male' => t('Man'), 'female' => t('Woman'), 'couple' => t('Couple')], ['value' => Form::getVal($oUser->matchSex), 'required' => 1]));
 
+        $oForm->addElement(new \PFBC\Element\Checkbox(t('For the purpose of:'), 'purpose',['talking' => t('Someone to talk to.'), 'friendship' => t('Friendship.'), 'dating' => t('Dating.'), 'love' => t('Finding love.')], ['value' => Form::getVal($oUser->purpose), 'required' => 1]));
+
         $oForm->addElement(new \PFBC\Element\Date(t('Date of birth:'), 'birth_date', ['id' => 'birth_date', 'onblur' => 'CValid(this.value, this.id)', 'value' => $sBirthDate, 'validation' => new \PFBC\Validation\BirthDate, 'required' => 1]));
         $oForm->addElement(new \PFBC\Element\HTMLExternal('<span class="input_error birth_date"></span>'));
 

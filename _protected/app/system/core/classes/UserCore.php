@@ -330,12 +330,13 @@ class UserCore
      * @param string $sUsername
      * @param string $sFirstName
      * @param string $sSex
+     * @param string $sPurpose
      *
      * @return string The link
      *
      * @throws Framework\File\Exception
      */
-    public function getProfileSignupLink($sUsername, $sFirstName, $sSex)
+    public function getProfileSignupLink($sUsername, $sFirstName, $sSex, $sPurpose)
     {
         if (!self::auth() && !AdminCore::auth()) {
             $aHttpParams = [
@@ -343,7 +344,8 @@ class UserCore
                 'a' => Registry::getInstance()->action,
                 'u' => $sUsername,
                 'f_n' => $sFirstName,
-                's' => $sSex
+                's' => $sSex,
+                'p' => $sPurpose
             ];
 
             $sLink = Uri::get(
@@ -391,6 +393,7 @@ class UserCore
             'member_username' => $oUserData->username,
             'member_first_name' => $oUserData->firstName,
             'member_sex' => $oUserData->sex,
+            'member_purpose' => $oUserData->purpose,
             'member_group_id' => $oUserData->groupId,
             'member_ip' => Ip::get(),
             'member_http_user_agent' => (new Browser)->getUserAgent(),

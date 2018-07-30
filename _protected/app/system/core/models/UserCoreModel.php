@@ -315,6 +315,7 @@ class UserCoreModel extends Model
         $bIsZipCode = !$bIsMail && !empty($aParams[SearchQueryCore::ZIP_CODE]) && Str::noSpaces($aParams[SearchQueryCore::ZIP_CODE]);
         $bIsSex = !$bIsMail && !empty($aParams[SearchQueryCore::SEX]) && is_array($aParams[SearchQueryCore::SEX]);
         $bIsMatchSex = !$bIsMail && !empty($aParams[SearchQueryCore::MATCH_SEX]);
+        $bIsPurpose = !$bIsMail && !empty($aParams[SearchQueryCore::PURPOSE]);
         $bIsOnline = !$bIsMail && !empty($aParams[SearchQueryCore::ONLINE]);
         $bIsAvatar = !$bIsMail && !empty($aParams[SearchQueryCore::AVATAR]);
         $bHideUserLogged = !$bIsMail && !empty($this->iProfileId);
@@ -347,6 +348,8 @@ class UserCoreModel extends Model
 
         $sSqlOrder = SearchCoreModel::order($aParams[SearchQueryCore::ORDER], $aParams[SearchQueryCore::SORT]);
 
+        $sSqlPurpose = $bIsPurpose ? ' AND FIND_IN_SET(:purpose, purpose)' : '';
+
         $sSqlMatchSex = $bIsMatchSex ? ' AND FIND_IN_SET(:matchSex, matchSex)' : '';
 
         $sSqlSex = '';
@@ -357,7 +360,7 @@ class UserCoreModel extends Model
         $rStmt = Db::getInstance()->prepare(
             'SELECT ' . $sSqlSelect . ' FROM' . Db::prefix(DbTableName::MEMBER) . 'AS m LEFT JOIN' . Db::prefix(DbTableName::MEMBER_PRIVACY) . 'AS p USING(profileId)
             LEFT JOIN' . Db::prefix(DbTableName::MEMBER_INFO) . 'AS i USING(profileId) WHERE username <> :ghostUsername AND searchProfile = \'yes\'
-            AND (groupId <> :visitorGroup) AND (groupId <> :pendingGroup) AND (ban = 0)' . $sSqlHideLoggedProfile . $sSqlFirstName . $sSqlMiddleName . $sSqlLastName . $sSqlMatchSex . $sSqlSex . $sSqlSingleAge . $sSqlAge . $sSqlCountry . $sSqlCity . $sSqlState .
+            AND (groupId <> :visitorGroup) AND (groupId <> :pendingGroup) AND (ban = 0)' . $sSqlHideLoggedProfile . $sSqlFirstName . $sSqlMiddleName . $sSqlLastName . $sSqlPurpose . $sSqlMatchSex . $sSqlSex . $sSqlSingleAge . $sSqlAge . $sSqlCountry . $sSqlCity . $sSqlState .
             $sSqlZipCode . $sSqlHeight . $sSqlWeight . $sSqlEmail . $sSqlOnline . $sSqlAvatar . $sSqlOrder . $sSqlLimit
         );
 
@@ -365,6 +368,9 @@ class UserCoreModel extends Model
         $rStmt->bindValue(':visitorGroup', self::VISITOR_GROUP, \PDO::PARAM_INT);
         $rStmt->bindValue(':pendingGroup', self::PENDING_GROUP, \PDO::PARAM_INT);
 
+        if ($bIsPurpose) {
+            $rStmt->bindValue(':purpose', $aParams[SearchQueryCore::PURPOSE], \PDO::PARAM_STR);
+        }
         if ($bIsMatchSex) {
             $rStmt->bindValue(':matchSex', $aParams[SearchQueryCore::MATCH_SEX], \PDO::PARAM_STR);
         }
@@ -659,7 +665,7 @@ class UserCoreModel extends Model
     {
         $sHashValidation = !empty($aData['hash_validation']) ? $aData['hash_validation'] : null;
 
-        $rStmt = Db::getInstance()->prepare('INSERT INTO' . Db::prefix(DbTableName::MEMBER) . '(email, username, password, firstName, lastName, sex, matchSex, birthDate, active, ip, hashValidation, joinDate, lastActivity)
+        $rStmt = Db::getInstance()->prepare('INSERT INTO' . Db::prefix(DbTableName::MEMBER) . '(email, username, password, firstName, lastName, sex, matchSex, purpose, birthDate, active, ip, hashValidation, joinDate, lastActivity)
             VALUES (:email, :username, :password, :firstName, :lastName, :sex, :matchSex, :birthDate, :active, :ip, :hashValidation, :joinDate, :lastActivity)');
         $rStmt->bindValue(':email', trim($aData['email']), \PDO::PARAM_STR);
         $rStmt->bindValue(':username', trim($aData['username']), \PDO::PARAM_STR);
@@ -668,6 +674,7 @@ class UserCoreModel extends Model
         $rStmt->bindValue(':lastName', $aData['last_name'], \PDO::PARAM_STR);
         $rStmt->bindValue(':sex', $aData['sex'], \PDO::PARAM_STR);
         $rStmt->bindValue(':matchSex', Form::setVal($aData['match_sex']), \PDO::PARAM_STR);
+        $rStmt->bindValue(':purpose', Form::setVal($aData['purpose']), \PDO::PARAM_STR);
         $rStmt->bindValue(':birthDate', $aData['birth_date'], \PDO::PARAM_STR);
         $rStmt->bindValue(':active', (!empty($aData['is_active']) ? $aData['is_active'] : RegistrationCore::NO_ACTIVATION), \PDO::PARAM_INT);
         $rStmt->bindValue(':ip', $aData['ip'], \PDO::PARAM_STR);
@@ -1049,7 +1056,7 @@ class UserCoreModel extends Model
         $rStmt = Db::getInstance()->prepare(
             'SELECT * FROM' . Db::prefix(DbTableName::MEMBER) . 'AS m LEFT JOIN' . Db::prefix(DbTableName::MEMBER_PRIVACY) . 'AS p USING(profileId)
             LEFT JOIN' . Db::prefix(DbTableName::MEMBER_INFO) . 'AS i USING(profileId) WHERE (username <> :ghostUsername) AND (searchProfile = \'yes\')
-            AND (username IS NOT NULL) AND (firstName IS NOT NULL) AND (sex IS NOT NULL) AND (matchSex IS NOT NULL) AND (country IS NOT NULL)
+            AND (username IS NOT NULL) AND (firstName IS NOT NULL) AND (sex IS NOT NULL) AND (matchSex IS NOT NULL) AND (purpose IS NOT NULL) AND (country IS NOT NULL)
             AND (city IS NOT NULL) AND (groupId <> :visitorGroup) AND (groupId <> :pendingGroup) AND (ban = 0)' .
             $sSqlHideLoggedProfile . $sSqlShowOnlyWithAvatars . $sOrder . $sSqlLimit
         );
@@ -1104,7 +1111,7 @@ class UserCoreModel extends Model
         $rStmt = Db::getInstance()->prepare(
             'SELECT ' . $sSqlSelect . ' FROM' . Db::prefix(DbTableName::MEMBER) . 'AS m LEFT JOIN' . Db::prefix(DbTableName::MEMBER_INFO) . 'AS i USING(profileId)
             WHERE (username <> :ghostUsername) AND (country = :country) ' . $sSqlCity . ' AND (username IS NOT NULL)
-            AND (firstName IS NOT NULL) AND (sex IS NOT NULL) AND (matchSex IS NOT NULL) AND (country IS NOT NULL)
+            AND (firstName IS NOT NULL) AND (sex IS NOT NULL) AND (matchSex IS NOT NULL) AND (purpose IS NOT NULL) AND (country IS NOT NULL)
             AND (city IS NOT NULL) AND (groupId <> :visitorGroup) AND (groupId <> :pendingGroup) AND (ban = 0)' . $sOrder . $sSqlLimit
         );
 
@@ -1323,7 +1330,7 @@ class UserCoreModel extends Model
      *
      * @param int $iProfileId
      *
-     * @return string The User's birthdate.
+     * @return string Match Sex.
      */
     public function getMatchSex($iProfileId)
     {
@@ -1340,6 +1347,30 @@ class UserCoreModel extends Model
         }
 
         return $sMatchSex;
+    }
+
+    /**
+     * Get Purpose for a member (so only from the Members table, because Affiliates and Admins don't have purpose).
+     *
+     * @param int $iProfileId
+     *
+     * @return string The User's purpose. (Or should it be an array? why isnt match sex an array?)
+     */
+    public function getPurpose($iProfileId)
+    {
+        $this->cache->start(self::CACHE_GROUP, 'purpose' . $iProfileId, static::CACHE_TIME);
+
+        if (!$sPurpose = $this->cache->get()) {
+            $rStmt = Db::getInstance()->prepare('SELECT purpose FROM' . Db::prefix(DbTableName::MEMBER) . 'WHERE profileId = :profileId LIMIT 1');
+            $rStmt->bindValue(':profileId', $iProfileId, \PDO::PARAM_INT);
+            $rStmt->execute();
+            $sPurpose = $rStmt->fetchColumn();
+            Db::free($rStmt);
+
+            $this->cache->put($sPurpose);
+        }
+
+        return $sPurpose;
     }
 
     /**

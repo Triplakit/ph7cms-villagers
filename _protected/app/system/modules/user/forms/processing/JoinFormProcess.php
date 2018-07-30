@@ -102,6 +102,7 @@ class JoinFormProcess extends Form
         $aData1 = [
             'sex' => $this->httpRequest->post('sex'),
             'match_sex' => Form::setVal($this->httpRequest->post('match_sex', Http::NO_CLEAN)),
+            'purpose' => Form::setVal($this->httpRequest->post('purpose', Http::NO_CLEAN)),
             'birth_date' => $sBirthDate,
             'profile_id' => $iProfileId
         ];

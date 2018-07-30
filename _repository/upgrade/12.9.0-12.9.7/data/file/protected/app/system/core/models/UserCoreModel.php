@@ -315,6 +315,7 @@ class UserCoreModel extends Model
         $bIsZipCode = !$bIsMail && !empty($aParams[SearchQueryCore::ZIP_CODE]) && Str::noSpaces($aParams[SearchQueryCore::ZIP_CODE]);
         $bIsSex = !$bIsMail && !empty($aParams[SearchQueryCore::SEX]) && is_array($aParams[SearchQueryCore::SEX]);
         $bIsMatchSex = !$bIsMail && !empty($aParams[SearchQueryCore::MATCH_SEX]);
+        $bIsPurpose = !$bIsMail && !empty($aParams[SearchQueryCore::PURPOSE]);
         $bIsOnline = !$bIsMail && !empty($aParams[SearchQueryCore::ONLINE]);
         $bIsAvatar = !$bIsMail && !empty($aParams[SearchQueryCore::AVATAR]);
         $bHideUserLogged = !$bIsMail && !empty($this->iProfileId);
@@ -347,6 +348,8 @@ class UserCoreModel extends Model
 
         $sSqlOrder = SearchCoreModel::order($aParams[SearchQueryCore::ORDER], $aParams[SearchQueryCore::SORT]);
 
+        $sSqlPurpose = $bIsPurpose ? ' AND FIND_IN_SET(:purpose, purpose)' : '';
+
         $sSqlMatchSex = $bIsMatchSex ? ' AND FIND_IN_SET(:matchSex, matchSex)' : '';
 
         $sSqlSex = '';
@@ -357,7 +360,7 @@ class UserCoreModel extends Model
         $rStmt = Db::getInstance()->prepare(
             'SELECT ' . $sSqlSelect . ' FROM' . Db::prefix(DbTableName::MEMBER) . 'AS m LEFT JOIN' . Db::prefix(DbTableName::MEMBER_PRIVACY) . 'AS p USING(profileId)
             LEFT JOIN' . Db::prefix(DbTableName::MEMBER_INFO) . 'AS i USING(profileId) WHERE username <> :ghostUsername AND searchProfile = \'yes\'
-            AND (groupId <> :visitorGroup) AND (groupId <> :pendingGroup) AND (ban = 0)' . $sSqlHideLoggedProfile . $sSqlFirstName . $sSqlMiddleName . $sSqlLastName . $sSqlMatchSex . $sSqlSex . $sSqlSingleAge . $sSqlAge . $sSqlCountry . $sSqlCity . $sSqlState .
+            AND (groupId <> :visitorGroup) AND (groupId <> :pendingGroup) AND (ban = 0)' . $sSqlHideLoggedProfile . $sSqlFirstName . $sSqlMiddleName . $sSqlLastName . $sSqlPurpose . $sSqlMatchSex . $sSqlSex . $sSqlSingleAge . $sSqlAge . $sSqlCountry . $sSqlCity . $sSqlState .
             $sSqlZipCode . $sSqlHeight . $sSqlWeight . $sSqlEmail . $sSqlOnline . $sSqlAvatar . $sSqlOrder . $sSqlLimit
         );
 

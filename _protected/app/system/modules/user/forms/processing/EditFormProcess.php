@@ -60,6 +60,10 @@ class EditFormProcess extends Form
             $oUserModel->updateProfile('matchSex', Form::setVal($this->httpRequest->post('match_sex', Http::NO_CLEAN)), $iProfileId);
         }
 
+        if (!$this->str->equals($this->httpRequest->post('purpose', Http::NO_CLEAN), $oUser->purpose)) {
+            $oUserModel->updateProfile('purpose', Form::setVal($this->httpRequest->post('purpose', Http::NO_CLEAN)), $iProfileId);
+        }
+
         if (!$this->str->equals($this->dateTime->get($this->httpRequest->post('birth_date'))->date('Y-m-d'), $oUser->birthDate)) {
             $oUserModel->updateProfile('birthDate', $this->dateTime->get($this->httpRequest->post('birth_date'))->date('Y-m-d'), $iProfileId);
         }
