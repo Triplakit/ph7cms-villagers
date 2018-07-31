@@ -24,6 +24,7 @@ class SearchUserCoreForm
      */
     private static $aSexOption = ['required' => 1];
     private static $aMatchSexOption = ['required' => 1];
+    private static $aPurposeOption = ['required' => 1];
     private static $aCountryOption = ['id' => 'str_country'];
     private static $aCityOption = ['id' => 'str_city'];
     private static $aStateOption = ['id' => 'str_state'];
@@ -50,6 +51,7 @@ class SearchUserCoreForm
         $oForm->addElement(new \PFBC\Element\Hidden('submit_search', 'form_search'));
         $oForm->addElement(new \PFBC\Element\Select(t('I am a:'), 'match_sex', ['male' => t('Man'), 'female' => t('Woman'), 'couple' => t('Couple')], self::$aSexOption));
         $oForm->addElement(new \PFBC\Element\Checkbox(t('Looking for a:'), 'sex', ['female' => t('Woman'), 'male' => t('Man'), 'couple' => t('Couple')], self::$aMatchSexOption));
+        $oForm->addElement(new \PFBC\Element\Checkbox(t('For the purpose of:'), 'purpose', ['talking' => t('Someone to talk to.'), 'friendship' => t('Friendship.'), 'dating' => t('Dating.'), 'love' => t('Finding love.')], self::$aPurposeOption));
         $oForm->addElement(new \PFBC\Element\Age(self::$aAgeOption));
         $oForm->addElement(new \PFBC\Element\Select(t('Country:'), 'country', Form::getCountryValues(), self::$aCountryOption));
         $oForm->addElement(new \PFBC\Element\Textbox(t('City:'), 'city', self::$aCityOption));
@@ -79,6 +81,7 @@ class SearchUserCoreForm
         $oForm->addElement(new \PFBC\Element\Hidden('submit_search', 'form_search'));
         $oForm->addElement(new \PFBC\Element\Select(t('I am a:'), 'match_sex', ['male' => t('Male'), 'female' => t('Woman'), 'couple' => t('Couple')], self::$aSexOption));
         $oForm->addElement(new \PFBC\Element\Checkbox(t('Looking for:'), 'sex', ['female' => t('Woman'), 'male' => t('Male'), 'couple' => t('Couple')], self::$aMatchSexOption));
+        $oForm->addElement(new \PFBC\Element\Checkbox(t('For the purpose of:'), 'purpose', ['talking' => t('Someone to talk to.'), 'friendship' => t('Friendship.'), 'dating' => t('Dating.'), 'love' => t('Finding love.')], self::$aPurposeOption));
         $oForm->addElement(new \PFBC\Element\Age(self::$aAgeOption));
         $oForm->addElement(new \PFBC\Element\Select(t('Country:'), 'country', Form::getCountryValues(), self::$aCountryOption));
         $oForm->addElement(new \PFBC\Element\Textbox(t('City:'), 'city', self::$aCityOption));
@@ -116,6 +119,25 @@ class SearchUserCoreForm
     }
 
     /**
+     * If a user is logged, get the relative 'purpose' for better and more intuitive search.
+     *
+     * @param UserCoreModel $oUserModel
+     * @param Session $oSession
+     *
+     * @return array The 'purpose'
+     */
+    protected static function getPurposeVals(UserCoreModel $oUserModel, Session $oSession)
+    {
+        $aUserPurpose = ['talking', 'friendship', 'dating', 'love'];
+
+        if (UserCore::auth()) {
+            $aUserPurpose = Form::getVal($oUserModel->getPurpose($oSession->get('member_id')));
+        }
+
+        return ['user_purpose' => $aUserPurpose];
+    }
+
+    /**
      * If a user is logged, get "approximately" the relative age for better and more intuitive search.
      *
      * @param UserCoreModel $oUserModel
@@ -150,6 +172,8 @@ class SearchUserCoreForm
         $oSession = new Session;
         $oUserModel = new UserCoreModel;
 
+        $aPurpose = ['talking', 'friendship', 'dating', 'love'];
+
         if ($oHttpRequest->getExists('match_sex')) {
             self::$aSexOption += ['value' => $oHttpRequest->get('match_sex')];
         } else {
@@ -160,6 +184,12 @@ class SearchUserCoreForm
             self::$aMatchSexOption += ['value' => $oHttpRequest->get('sex')];
         } else {
             self::$aMatchSexOption += ['value' => self::getGenderVals($oUserModel, $oSession)['match_sex']];
+        }
+
+        if ($oHttpRequest->getExists('purpose')) {
+            self::$aPurposeOption += ['value' => $oHttpRequest->get('purpose')];
+        } else {
+            self::$aPurposeOption += ['value' => self::getPurpose($oUserModel, $oSession)['user_purpose']];
         }
 
         self::$aAgeOption = ['value' => self::getAgeVals($oUserModel, $oSession)];

@@ -19,23 +19,23 @@
 
 -- Sample Members --
 
-INSERT INTO ph7_members (email, username, password, firstName, lastName, birthDate, sex, matchSex, ip, lastActivity, featured, active, userStatus, groupId, joinDate) VALUES
-('demo2@demo.cow', 'garcia', @sPassword, 'Grace', 'Park', '1992-11-21', 'female', 'male', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo3@demo.cow', 'peter22', @sPassword, 'Peter', 'Backhard', '1977-12-21', 'male', 'female', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo4@demo.cow', 'katin', @sPassword, 'Katin', 'Layjyr', '1988-12-21', 'female', 'male', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo5@demo.cow', 'trinityI', @sPassword, 'Trinity', 'Rivic', '1988-12-21', 'female', 'male,female', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo6@demo.cow', 'JohnH', @sPassword, 'John', 'Pittsburgh', '1988-12-21', 'male', 'female', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo7@demo.cow', 'AntonR', @sPassword, 'Anton', 'Storn', '1968-12-21', 'male', 'female,couple', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo8@demo.cow', 'kate62', @sPassword, 'Kate', 'Slater', '1988-12-21', 'female', 'male,female', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo9@demo.cow', 'MarkO', @sPassword, 'Mark', 'Yohir', '1978-01-21', 'male', 'male,female', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo10@demo.cow', 'Tom4', @sPassword, 'Tomy', 'Pittsburgh', '1992-12-21', 'male', 'female', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo11@demo.cow', 'rachO0O', @sPassword, 'Rachel', 'Žarko', '1968-02-10', 'female', 'male', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo12@demo.cow', 'Stive', @sPassword, 'Stive', 'Upton', '1988-12-21', 'male', 'male,female', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo13@demo.cow', 'EmmaR', @sPassword, 'Emma', 'Solon', '1992-06-16', 'female', 'male,female,couple', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo14@demo.cow', 'scarlaaa', @sPassword, 'Scarlett', 'Stewart', '1990-05-26', 'female', 'male', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo15@demo.cow', 'lolo22', @sPassword, 'Lola', 'Weisz', '1991-06-09', 'female', 'male,female', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo16@demo.cow', 'bartys', @sPassword, 'Bart', 'San', '1978-11-01', 'male', 'female', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
-('demo17@demo.cow', 'wenwen', @sPassword, 'Wendy', 'Beaumnt', '1965-06-10', 'female', 'male,couple', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate);
+INSERT INTO ph7_members (email, username, password, firstName, lastName, birthDate, sex, matchSex, purpose, ip, lastActivity, featured, active, userStatus, groupId, joinDate) VALUES
+('demo2@demo.cow', 'garcia', @sPassword, 'Grace', 'Park', '1992-11-21', 'female', 'male', 'talking,friendship,dating,love', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo3@demo.cow', 'peter22', @sPassword, 'Peter', 'Backhard', '1977-12-21', 'male', 'female', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo4@demo.cow', 'katin', @sPassword, 'Katin', 'Layjyr', '1988-12-21', 'female', 'male', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo5@demo.cow', 'trinityI', @sPassword, 'Trinity', 'Rivic', '1988-12-21', 'female', 'male,female', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo6@demo.cow', 'JohnH', @sPassword, 'John', 'Pittsburgh', '1988-12-21', 'male', 'female', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo7@demo.cow', 'AntonR', @sPassword, 'Anton', 'Storn', '1968-12-21', 'male', 'female,couple', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo8@demo.cow', 'kate62', @sPassword, 'Kate', 'Slater', '1988-12-21', 'female', 'male,female', 'love', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo9@demo.cow', 'MarkO', @sPassword, 'Mark', 'Yohir', '1978-01-21', 'male', 'male,female', 'love', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo10@demo.cow', 'Tom4', @sPassword, 'Tomy', 'Pittsburgh', '1992-12-21', 'male', 'female', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo11@demo.cow', 'rachO0O', @sPassword, 'Rachel', 'Žarko', '1968-02-10', 'female', 'male', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo12@demo.cow', 'Stive', @sPassword, 'Stive', 'Upton', '1988-12-21', 'male', 'male,female', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo13@demo.cow', 'EmmaR', @sPassword, 'Emma', 'Solon', '1992-06-16', 'female', 'male,female,couple', 'dating' @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo14@demo.cow', 'scarlaaa', @sPassword, 'Scarlett', 'Stewart', '1990-05-26', 'female', 'male', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo15@demo.cow', 'lolo22', @sPassword, 'Lola', 'Weisz', '1991-06-09', 'female', 'male,female', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo16@demo.cow', 'bartys', @sPassword, 'Bart', 'San', '1978-11-01', 'male', 'female', @sDefIp, 'dating', @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate),
+('demo17@demo.cow', 'wenwen', @sPassword, 'Wendy', 'Beaumnt', '1965-06-10', 'female', 'male,couple', 'dating', @sDefIp, @sCurrentDate, 0, 1, @iUserStatus, @iGroupId, @sCurrentDate);
 @iProfileId := LAST_INSERT_ID();
 
 

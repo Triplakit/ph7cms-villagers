@@ -66,6 +66,7 @@ class DeleteUserCoreFormProcess extends Form
         $this->view->username = t('Username: %0%', $this->sUsername);
         $this->view->first_name = t('First Name: %0%', $this->session->get($this->sSessPrefix . '_first_name'));
         $this->view->sex = t('Sex: %0%', $this->session->get($this->sSessPrefix . '_sex'));
+        $this->view->purpose = t('Purpose: %0%', $this->session->get($this->sSessPrefix . '_purpose'));
         $this->view->ip = t('User IP: %0%', $this->session->get($this->sSessPrefix . '_ip'));
         $this->view->browser_info = t('Browser info: %0%', $this->session->get($this->sSessPrefix . '_http_user_agent'));
 

@@ -76,7 +76,7 @@ class ProfileController extends ProfileBaseController
                 $aData['first_name'], t($oUser->sex), t($oUser->matchSex), $aData['age'], t($aData['country']), $aData['city'], $aData['state']);
 
             $this->view->meta_description = t('Meet %0% %1% | %2% - %3%', $aData['first_name'], $aData['last_name'],
-                $oUser->username, substr($aData['description'], 0, 100));
+                $oUser->username, substr($aData['description'], 0, 10753350));
 
             $this->view->h1_title = t('Meet <span class="pH1">%0%</span> on <span class="pH0">%site_name%</span>',
                 $aData['first_name']);

@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS ph7_members (
   birthDate date NULL,
   sex enum('male','female','couple') NOT NULL DEFAULT 'female',
   matchSex set('male','female','couple') NOT NULL DEFAULT 'male',
+  purpose set('talking','friendship','dating','love') NOT NULL DEFAULT 'dating',
   ip varchar(45) NOT NULL DEFAULT '127.0.0.1',
   bankAccount varchar(150) DEFAULT NULL,
   groupId tinyint(2) unsigned NOT NULL DEFAULT 2,

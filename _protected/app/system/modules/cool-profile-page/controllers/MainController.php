@@ -77,6 +77,7 @@ class MainController extends ProfileBaseController
             $this->view->middle_name = $aData['middle_name'];
             $this->view->sex = $oUser->sex;
             $this->view->match_sex = $oUser->matchSex;
+            $this->view->purpose = $oUser->purpose;
             $this->view->match_sex_search = str_replace(['[code]', ','], '&sex[]=', '[code]' . $oUser->matchSex);
             $this->view->age = $aData['age'];
             $this->view->country = t($aData['country']);
